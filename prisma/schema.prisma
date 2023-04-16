@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(cuid())
+  name       String
+  email      String   @unique
+  created_at DateTime @default(now())
+  pert       Pert[]
+}
+
+model Pert {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  optimistic  Float
+  nominal     Float
+  pessimistic Float
+  unitTime    Time     @default(HORAS)
+  estimated   Float
+  created_at  DateTime @default(now())
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+enum Time {
+  HORAS
+  DIAS
+  MESES
+}
