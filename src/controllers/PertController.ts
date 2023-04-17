@@ -78,4 +78,14 @@ export class PertController {
 
     return response.status(200).json(pert);
   }
+
+  async delete(request: Request, response: Response) {
+    const { id } = request.params;
+
+    await prisma.pert.delete({
+      where: { id },
+    });
+
+    return response.status(204).send();
+  }
 }
