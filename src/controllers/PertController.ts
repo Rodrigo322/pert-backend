@@ -8,7 +8,7 @@ export class PertController {
     const { title, description, optimistic, nominal, pessimistic, unitTime } =
       request.body;
 
-    const { userId } = request.params;
+    const { id } = request.user;
 
     const estimated = calculate_pert(optimistic, nominal, pessimistic);
 
@@ -23,7 +23,7 @@ export class PertController {
         unitTime,
         User: {
           connect: {
-            id: userId,
+            id,
           },
         },
       },
@@ -39,10 +39,10 @@ export class PertController {
   }
 
   async getPertsByUser(request: Request, response: Response) {
-    const { userId } = request.params;
+    const { id } = request.user;
 
     const perts = await prisma.pert.findMany({
-      where: { User: { id: userId } },
+      where: { User: { id } },
     });
 
     return response.status(200).json(perts);

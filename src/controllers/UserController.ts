@@ -3,11 +3,12 @@ import { prisma } from "../utils/prisma";
 
 export class UserController {
   async createUser(request: Request, response: Response) {
-    const { name, email } = request.body;
+    const { name, email, password } = request.body;
     const user = await prisma.user.create({
       data: {
         name,
         email,
+        password,
       },
     });
     return response.status(201).json(user);
